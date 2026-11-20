@@ -11,7 +11,7 @@
 - [x] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
 - [x] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
 - [x] **Phase 5:** Navigation, Mobile Ergonomics, Imagery & Visual Polish
-- [ ] **Phase 6:** Accessibility, SEO Metadata & Verification
+- [x] **Phase 6:** Accessibility, SEO Metadata & Verification
 
 ---
 
@@ -186,25 +186,25 @@ Elevate craft, visual consistency, and mobile comfort across the full page.
 Ensure the upgraded frontend is accessible, clean in link previews, and reliably tested.
 
 ### 6.1 Accessibility & Semantics
-- [ ] Wrap main page content in a `<main id="main">` landmark and add a visually-hidden `"Skip to schedule"` link at the top of the page
-- [ ] Audit heading outline (`h1` → `h2` → `h3`) so no levels are skipped across new sections
-- [ ] Verify keyboard-only navigation across header nav, mobile drawer, filter pills, Radix `Tabs`, expandable rows, `BookingSheet`, `My Bookings`, and `FAQ` accordion (including focus return on sheet close)
-- [ ] Check color contrast (WCAG AA) for `text-muted-foreground` on dark cards, amber `text-primary` badges, and text layered over hero/CTA photography
+- [x] Wrap main page content in a `<main id="main">` landmark and add a visually-hidden `"Skip to schedule"` link at the top of the page
+- [x] Audit heading outline (`h1` → `h2` → `h3`) so no levels are skipped across new sections
+- [x] Verify keyboard-only navigation across header nav, mobile drawer, filter pills, Radix `Tabs`, expandable rows, `BookingSheet`, `My Bookings`, and `FAQ` accordion (including focus return on sheet close)
+- [x] Check color contrast (WCAG AA) for `text-muted-foreground` on dark cards, amber `text-primary` badges, and text layered over hero/CTA photography
 
 ### 6.2 Metadata & Brand Hygiene
-- [ ] Remove leftover `{ name: "twitter:site", content: "@Lovable" }` from `src/routes/__root.tsx`
-- [ ] Add a dedicated `og:image` and `twitter:image` meta tag to the `/` route (`src/routes/index.tsx`) for rich WhatsApp/social link previews
-- [ ] Review global uppercase `h1, h2, h3` rule in `src/styles.css` to ensure 404/error screens and dialog titles remain clean and legible
+- [x] Remove leftover `{ name: "twitter:site", content: "@Lovable" }` from `src/routes/__root.tsx`
+- [x] Add a dedicated `og:image` and `twitter:image` meta tag to the `/` route (`src/routes/index.tsx`) for rich WhatsApp/social link previews
+- [x] Review global uppercase `h1, h2, h3` rule in `src/styles.css` to ensure 404/error screens and dialog titles remain clean and legible
 
 ### 6.3 Testing & QA Checklist
-- [ ] Expand `src/data/schedule.test.ts` to cover:
+- [x] Expand `src/data/schedule.test.ts` to cover:
   - `cancelSpot` behavior and capacity bounds
   - `getUpcomingWeekDates` weekday alignment & `isToday` flag
   - `getNextAvailableSession` edge cases (skipping full sessions / wrapping week)
-- [ ] Add frontend unit/component tests for:
+- [x] Add frontend unit/component tests for:
   - Schedule filtering (by place, focus, location) and Full-Week view
   - Booking + waitlist flow, duplicate-booking prevention, and `localStorage` persistence
   - `.ics` calendar string generation
   - `EN | ES` language switching
-- [ ] Verify responsive visual QA across **375px** (small mobile), **768px** (tablet), and **1440px** (desktop) viewports
-- [ ] Run `npm run lint`, `npm test`, and `npm run build` with zero errors or warnings
+- [ ] Verify responsive visual QA across **375px** (small mobile), **768px** (tablet), and **1440px** (desktop) viewports *(live browser preview)*
+- [x] Run `npm run lint`, `npm test`, and `npm run build` with zero errors or warnings
