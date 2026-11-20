@@ -19,6 +19,7 @@ import {
   type Session,
 } from "@/data/schedule";
 import { PROOF_STATS, TESTIMONIALS } from "@/data/site";
+import { buildHomeHead } from "@/data/metadata";
 import { useBookings } from "@/hooks/use-bookings";
 import { useLanguage } from "@/hooks/use-language";
 import hero from "@/assets/hero.jpg";
@@ -31,26 +32,7 @@ import montjuic from "@/assets/montjuic.jpg";
 import ctaStudio from "@/assets/cta-studio.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Alex Moreno — Book Strength Sessions in Barcelona" },
-      {
-        name: "description",
-        content:
-          "Structured strength and conditioning sessions in a Barcelona studio and outdoors. See the schedule and book in one click.",
-      },
-      { property: "og:title", content: "Alex Moreno — Book Strength Sessions in Barcelona" },
-      {
-        property: "og:description",
-        content:
-          "Studio and outdoor training in Barcelona. See live availability and book your session.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: hero },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: hero },
-    ],
-  }),
+  head: () => buildHomeHead(),
   component: Index,
 });
 

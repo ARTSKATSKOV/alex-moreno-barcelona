@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider } from "@/hooks/use-language";
+import { SITE_METADATA } from "@/data/metadata";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -79,25 +80,21 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-    // Replace these placeholders with the app's name and description when first building the app.
-    // Each content route, / included, must still set its own head(). Never add og:image or
-    // twitter:image here: every page without its own would inherit the root's preview image.
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Alex Moreno — Strength & Conditioning, Barcelona" },
+      { title: SITE_METADATA.defaultTitle },
+      { name: "description", content: SITE_METADATA.description },
+      { name: "author", content: SITE_METADATA.author },
+      { name: "theme-color", content: SITE_METADATA.themeColor },
+      { name: "color-scheme", content: "dark" },
       {
-        name: "description",
-        content: "Book studio and outdoor strength sessions with coach Alex Moreno in Barcelona.",
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1",
       },
-      { name: "author", content: "Alex Moreno" },
-      { property: "og:title", content: "Alex Moreno — Strength & Conditioning, Barcelona" },
-      {
-        property: "og:description",
-        content: "Book studio and outdoor strength sessions with coach Alex Moreno in Barcelona.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "application-name", content: "Alex Moreno" },
+      { name: "apple-mobile-web-app-title", content: "Alex Moreno" },
+      { name: "format-detection", content: "telephone=no" },
     ],
     links: [
       {
@@ -110,7 +107,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/site.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
