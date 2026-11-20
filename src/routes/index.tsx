@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Backpack, CalendarCheck, Check, Clock, MapPin, X } from "lucide-react";
+import { ArrowRight, Backpack, Check, Clock, MapPin, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/site/Header";
 import { Schedule } from "@/components/site/Schedule";
 import { BookingSheet, type BookingSheetMode } from "@/components/site/BookingSheet";
 import { MyBookingsSheet } from "@/components/site/MyBookingsSheet";
@@ -26,6 +27,8 @@ import studio from "@/assets/studio.jpg";
 import park from "@/assets/park.jpg";
 import urban from "@/assets/urban.jpg";
 import studioSession from "@/assets/studio-session.jpg";
+import montjuic from "@/assets/montjuic.jpg";
+import ctaStudio from "@/assets/cta-studio.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -74,10 +77,35 @@ function Index() {
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
   const [nextAvailable, setNextAvailable] = useState<NextSessionMatch | null>(null);
+  const [showMobileStickyCta, setShowMobileStickyCta] = useState(false);
 
   useEffect(() => {
     setNextAvailable(getNextAvailableSession(sessions, new Date()));
   }, [sessions]);
+
+  // Hide the mobile sticky bottom CTA while the Hero CTA or #schedule is already on screen.
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof IntersectionObserver === "undefined") return;
+    const heroCta = document.getElementById("hero-cta");
+    const scheduleEl = document.getElementById("schedule");
+    if (!heroCta && !scheduleEl) return;
+
+    const visibility = { hero: true, schedule: false };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target.id === "hero-cta") visibility.hero = entry.isIntersecting;
+          if (entry.target.id === "schedule") visibility.schedule = entry.isIntersecting;
+        }
+        setShowMobileStickyCta(!visibility.hero && !visibility.schedule);
+      },
+      { threshold: 0.05 },
+    );
+
+    if (heroCta) observer.observe(heroCta);
+    if (scheduleEl) observer.observe(scheduleEl);
+    return () => observer.disconnect();
+  }, []);
 
   const activeSession = sheetState.sessionId
     ? (sessions.find((s) => s.id === sheetState.sessionId) ?? null)
@@ -104,39 +132,12 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0">
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
-          <span className="font-display text-xl font-bold uppercase tracking-wide">
-            Alex Moreno<span className="text-primary">.</span>
-          </span>
-          <nav className="flex items-center gap-4 text-sm">
-            <button
-              type="button"
-              onClick={() => scrollToId("schedule")}
-              className="hidden text-muted-foreground hover:text-foreground sm:block cursor-pointer"
-            >
-              {t.nav.schedule}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMyBookingsOpen(true)}
-              className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
-            >
-              <CalendarCheck className="size-3.5 text-primary" />
-              <span className="hidden sm:inline">{t.nav.myBookings}</span>
-              {totalSavedCount > 0 && (
-                <span className="rounded-full bg-primary px-1.5 py-0.2 text-[10px] font-bold text-primary-foreground">
-                  {totalSavedCount}
-                </span>
-              )}
-            </button>
-            <Button size="sm" className="font-semibold" onClick={() => scrollToId("schedule")}>
-              {t.nav.bookCta}
-            </Button>
-          </nav>
-        </div>
-      </header>
+    <div id="top" className="min-h-screen pb-20 md:pb-0">
+      <Header
+        savedCount={totalSavedCount}
+        onOpenMyBookings={() => setMyBookingsOpen(true)}
+        onNavigate={scrollToId}
+      />
 
       {/* Hero */}
       <section className="relative flex min-h-[92svh] items-end overflow-hidden">
@@ -151,20 +152,23 @@ function Index() {
 
         <div className="relative mx-auto flex w-full max-w-6xl flex-col justify-between gap-8 px-5 pb-14 pt-28 md:flex-row md:items-end md:pb-20">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+            <p className="animate-fade-up text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               {t.hero.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-3xl text-6xl font-extrabold sm:text-7xl md:text-8xl">
+            <h1 className="animate-fade-up-delay-1 mt-4 max-w-3xl text-6xl font-extrabold sm:text-7xl md:text-8xl">
               {t.hero.headlineLine1}
               <br />
               {t.hero.headlineLine2}
               <br />
               <span className="text-primary">{t.hero.headlineAccent}</span>
             </h1>
-            <p className="mt-6 max-w-md text-base text-foreground/85 md:text-lg">
+            <p className="animate-fade-up-delay-2 mt-6 max-w-md text-base text-foreground/85 md:text-lg">
               {t.hero.subtitle}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-6">
+            <div
+              id="hero-cta"
+              className="animate-fade-up-delay-2 mt-8 flex flex-wrap items-center gap-6"
+            >
               <Button
                 size="lg"
                 className="h-13 px-8 text-base font-semibold"
@@ -352,8 +356,8 @@ function Index() {
               className="aspect-[4/5] w-full rounded-sm object-cover"
             />
             <img
-              src={park}
-              alt="Group training in the park"
+              src={montjuic}
+              alt="Small-group kettlebell stair carries on Montjuïc in Barcelona"
               loading="lazy"
               className="col-span-2 aspect-[2/1] w-full rounded-sm object-cover md:col-span-1 md:aspect-[4/5]"
             />
@@ -408,12 +412,12 @@ function Index() {
       {/* Final CTA */}
       <section className="relative overflow-hidden">
         <img
-          src={urban}
+          src={ctaStudio}
           alt=""
           loading="lazy"
           className="absolute inset-0 size-full object-cover"
         />
-        <div className="absolute inset-0 bg-background/80" />
+        <div className="absolute inset-0 bg-background/75" />
         <div className="relative mx-auto max-w-6xl px-5 py-24 text-center md:py-32">
           <h2 className="text-6xl font-extrabold md:text-8xl">
             {t.sections.finalHeadline1}
@@ -433,15 +437,17 @@ function Index() {
 
       <Footer />
 
-      {/* Mobile sticky CTA */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden">
-        <Button
-          className="h-12 w-full text-base font-semibold"
-          onClick={() => scrollToId("schedule")}
-        >
-          {t.nav.bookCta}
-        </Button>
-      </div>
+      {/* Mobile sticky CTA — automatically hidden while Hero CTA, #schedule, or a sheet is active */}
+      {showMobileStickyCta && !sheetState.open && !myBookingsOpen && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden">
+          <Button
+            className="h-12 w-full text-base font-semibold"
+            onClick={() => scrollToId("schedule")}
+          >
+            {t.nav.bookCta}
+          </Button>
+        </div>
+      )}
 
       <BookingSheet
         open={sheetState.open}

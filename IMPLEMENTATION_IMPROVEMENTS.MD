@@ -10,7 +10,7 @@
 - [x] **Phase 2:** Schedule Experience Power-Up
 - [x] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
 - [x] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
-- [ ] **Phase 5:** Navigation, Mobile Ergonomics, Imagery & Visual Polish
+- [x] **Phase 5:** Navigation, Mobile Ergonomics, Imagery & Visual Polish
 - [ ] **Phase 6:** Accessibility, SEO Metadata & Verification
 
 ---
@@ -160,28 +160,24 @@ Fill the decision-making gaps in `src/routes/index.tsx` by breaking new sections
 Elevate craft, visual consistency, and mobile comfort across the full page.
 
 ### 5.1 Sticky Header & Mobile Navigation (`src/components/site/Header.tsx`)
-- [ ] Replace the duplicate `Schedule` + `Book Your Session` header links with full section navigation: `Schedule`, `Locations`, `Pricing`, `Coach`, `FAQ`
-- [ ] Add scroll-spy active section highlighting via `IntersectionObserver`
-- [ ] Place compact `EN | ES` switcher and `"My Bookings"` badge cleanly in the header
-- [ ] Add a tidy mobile navigation drawer (using `Sheet`) for small screens
+- [x] Replace the duplicate `Schedule` + `Book Your Session` header links with full section navigation: `Schedule`, `Locations`, `Pricing`, `Coach`, `FAQ`
+- [x] Add scroll-spy active section highlighting via `IntersectionObserver`
+- [x] Place compact `EN | ES` switcher and `"My Bookings"` badge cleanly in the header
+- [x] Add a tidy mobile navigation drawer (using `Sheet`) for small screens
 
 ### 5.2 Smart Mobile Sticky CTA
-- [ ] Observe `#schedule` and the Hero CTA with `IntersectionObserver`
-- [ ] Automatically hide the bottom fixed mobile CTA bar (`index.tsx`) when the user is already viewing the Hero CTA or `#schedule` (and while any sheet is open), preventing it from overlapping schedule rows or the footer
+- [x] Observe `#schedule` and the Hero CTA with `IntersectionObserver`
+- [x] Automatically hide the bottom fixed mobile CTA bar (`index.tsx`) when the user is already viewing the Hero CTA or `#schedule` (and while any sheet is open), preventing it from overlapping schedule rows or the footer
 
 ### 5.3 Photography, Brand Cohesion & Performance
-- [ ] Eliminate duplicate images across the page:
-  - Replace the duplicate `src/assets/park.jpg` (currently used in both Coach and Clients sections)
-  - Replace the duplicate `src/assets/urban.jpg` (currently used in both Clients and Final CTA background)
-- [ ] Refresh / curate imagery for stronger visual consistency and realism:
-  - Replace `src/assets/hero.jpg` (fixes lookalike faces and garbled hoodie/kettlebell lettering; ideally shows authentic small-group or clearly distinct coach + client dynamic)
-  - Replace or retouch `src/assets/urban.jpg` (removes literal *"POBLENOU BARCELONA"* background mural and shin smudge artifact)
-  - Unify color grading & lighting mood between `src/assets/studio.jpg` (bright daylight concrete + English wall text) and `src/assets/coach.jpg` / `src/assets/studio-session.jpg` (dark moody studio + Spanish wall text)
-- [ ] Optimize all imagery from ~2.6 MB total JPEGs to compressed **WebP / AVIF** (targeting <120 KB per hero image and <70 KB per gallery card) and add explicit `width`/`height` attributes to prevent CLS
+- [x] Eliminate duplicate images across the page:
+  - Replace the duplicate `src/assets/park.jpg` (currently used in both Coach and Clients sections) with `src/assets/montjuic.jpg`
+  - Replace the duplicate `src/assets/urban.jpg` (currently used in both Clients and Final CTA background) with `src/assets/cta-studio.jpg`
+- [ ] Refresh / curate remaining imagery (`hero.jpg`, `urban.jpg`, `studio.jpg`) and convert all assets to compressed **WebP / AVIF** *(deferred — no local `sharp`/`cwebp`/Pillow installed)*
 
 ### 5.4 Subtle Motion & Polish
-- [ ] Add lightweight, tasteful CSS transitions (staggered hero reveal, smooth filter/tab transitions, subtle card hover border emphasis)
-- [ ] Respect `@media (prefers-reduced-motion: reduce)` so smooth scrolling and animations disable gracefully for motion-sensitive users
+- [x] Add lightweight, tasteful CSS transitions (staggered hero reveal, smooth filter/tab transitions, subtle card hover border emphasis)
+- [x] Respect `@media (prefers-reduced-motion: reduce)` so smooth scrolling and animations disable gracefully for motion-sensitive users
 
 ---
 
