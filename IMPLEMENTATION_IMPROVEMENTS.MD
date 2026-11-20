@@ -6,7 +6,7 @@
 
 ## Progress Overview
 
-- [ ] **Phase 1:** Data Architecture & Client-Side Foundations
+- [x] **Phase 1:** Data Architecture & Client-Side Foundations
 - [ ] **Phase 2:** Schedule Experience Power-Up
 - [ ] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
 - [ ] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
@@ -20,34 +20,34 @@
 Set up clean static data models and browser-only persistence utilities so later UI phases stay modular and easy to wire up (and easy to connect to a real backend later).
 
 ### 1.1 Enrich Session Data (`src/data/schedule.ts`)
-- [ ] Extend the `Session` type with frontend metadata:
+- [x] Extend the `Session` type with frontend metadata:
   - `description` (1–2 sentence preview of what the session involves)
   - `level` (e.g. `"All levels"`, `"Intermediate"`, `"Beginner-friendly"`)
   - `meetingPoint` (exact landmark, e.g. *"Cascada Fountain north steps"*) and `mapsUrl`
   - `equipment` (short list of what is provided)
   - `priceEur` (drop-in rate shown on the row and in the booking sheet)
-- [ ] Add pure helper functions alongside `bookSpot`:
+- [x] Add pure helper functions alongside `bookSpot`:
   - `cancelSpot(sessions, id)` — returns a spot back to a session (capped at `capacity`)
   - `getUpcomingWeekDates(referenceDate)` — maps `day` indices (`0 = Mon` … `6 = Sun`) to real upcoming calendar dates and flags `isToday`
   - `getNextAvailableSession(sessions, now)` — finds the soonest upcoming session with `spots > 0` for the Hero shortcut card
 
 ### 1.2 Static Content & Bilingual Copy (`src/data/site.ts`, `src/data/i18n.ts`)
-- [ ] Centralize page copy and structured data currently hardcoded in `src/routes/index.tsx`:
+- [x] Centralize page copy and structured data currently hardcoded in `src/routes/index.tsx`:
   - Key proof stats (`10+ Years`, `1,200+ Clients`, `14 Months Avg. Stay`, `Max 6–12 / Class`)
   - Training formats comparison (**Small Group** vs. **Private 1:1**)
   - Pricing & packs (*First-Timer Trial*, *Single Drop-in*, *5-Pack / 10-Pack*, *Monthly Membership*)
   - Barcelona training locations (`Eixample Studio`, `Barceloneta Beach`, `Parc de la Ciutadella`, `Montjuïc`, `Poblenou`) with exact pins, transit notes, and matching schedule filter keys
   - FAQ items (rain/weather backup policy, 12h/24h cancellation window, beginner readiness, languages coached, equipment & lockers, private 1:1 availability)
   - Direct contact channels (WhatsApp link, Instagram, email)
-- [ ] Create a lightweight `EN | ES` translation dictionary and React context/hook (`src/hooks/use-language.tsx`) persisted to `localStorage`
+- [x] Create a lightweight `EN | ES` translation dictionary and React context/hook (`src/hooks/use-language.tsx`) persisted to `localStorage`
 
 ### 1.3 Client-Side Bookings & Calendar Utilities
-- [ ] Create a `localStorage`-backed hook (`src/hooks/use-bookings.ts`) to store:
+- [x] Create a `localStorage`-backed hook (`src/hooks/use-bookings.ts`) to store:
   - User's booked session records (`sessionId`, `bookedAt`, attendee name/email/notes)
   - User's waitlisted session IDs
   - Derived adjusted `sessions` list so spot counts stay accurate across page reloads
   - Duplicate-booking guard (prevents reserving the same session twice)
-- [ ] Create a pure frontend calendar helper (`src/lib/calendar.ts`):
+- [x] Create a pure frontend calendar helper (`src/lib/calendar.ts`):
   - Generate and trigger download of a standards-compliant `.ics` file for any booked session
   - Build a pre-filled Google Calendar event deep-link (`calendar.google.com/calendar/render?...`)
 
