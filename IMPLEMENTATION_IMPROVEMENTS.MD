@@ -7,7 +7,7 @@
 ## Progress Overview
 
 - [x] **Phase 1:** Data Architecture & Client-Side Foundations
-- [ ] **Phase 2:** Schedule Experience Power-Up
+- [x] **Phase 2:** Schedule Experience Power-Up
 - [ ] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
 - [ ] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
 - [ ] **Phase 5:** Navigation, Mobile Ergonomics, Imagery & Visual Polish
@@ -58,25 +58,25 @@ Set up clean static data models and browser-only persistence utilities so later 
 Transform `src/components/site/Schedule.tsx` from a basic static day list into a fast, scannable, conversion-ready booking tool.
 
 ### 2.1 Smart Default Day, Real Dates & Accessible Tabs
-- [ ] Replace hardcoded `useState(0)` (Monday) with auto-selection of today's weekday on mount
-- [ ] Display real upcoming date numbers under each weekday (`Fri 20`, `Sat 21`, etc.) with a subtle `"Today"` indicator
-- [ ] Migrate custom `role="tablist"` buttons to Radix `Tabs` (`src/components/ui/tabs.tsx`) so keyboard arrow navigation, `role="tabpanel"`, and `aria-controls` work properly
-- [ ] Fix cramped 7-column mobile layout (`grid-cols-7` on `<sm` viewports) by switching to a horizontally scrollable pill strip or roomy ≥44px tap targets on small screens
+- [x] Replace hardcoded `useState(0)` (Monday) with auto-selection of today's weekday on mount
+- [x] Display real upcoming date numbers under each weekday (`Fri 20`, `Sat 21`, etc.) with a subtle `"Today"` indicator
+- [x] Migrate custom `role="tablist"` buttons to Radix `Tabs` (`src/components/ui/tabs.tsx`) so keyboard arrow navigation, `role="tabpanel"`, and `aria-controls` work properly
+- [x] Fix cramped 7-column mobile layout (`grid-cols-7` on `<sm` viewports) by switching to a horizontally scrollable pill strip or roomy ≥44px tap targets on small screens
 
 ### 2.2 Filtering & Full-Week Overview
-- [ ] Add compact filter pills above the schedule:
+- [x] Add compact filter pills above the schedule:
   - **Place:** `All` · `Studio` · `Outdoor`
   - **Focus:** `All` · `Strength` · `Conditioning` · `Mobility`
   - **Location chip (when active):** allows filtering to a specific Barcelona spot (e.g. triggered from the Locations section) with a 1-click clear button
-- [ ] Add a **"By Day" / "Full Week"** view toggle so visitors can scan all 15 weekly sessions grouped by day without clicking 7 tabs
-- [ ] Add a clear empty state (*"No sessions match these filters"*) with a `"Reset filters"` button
+- [x] Add a **"By Day" / "Full Week"** view toggle so visitors can scan all 15 weekly sessions grouped by day without clicking 7 tabs
+- [x] Add a clear empty state (*"No sessions match these filters"*) with a `"Reset filters"` button
 
 ### 2.3 Richer Session Rows & Waitlist / Booked States
-- [ ] Add subtle hover highlight and smooth transition styling to schedule rows
-- [ ] Add an expandable row detail toggle (or subtle info chevron) showing workout description, level badge, equipment provided, and exact meeting point with a Maps link
-- [ ] Show session price cleanly alongside duration/location (or clearly indicate *"Included in packs / €XX drop-in"*)
-- [ ] Replace the dead disabled `"Full"` button (e.g. Tuesday 18:30 `Barbell Strength`) with an active `"Join waitlist"` button
-- [ ] Reflect user reservation state directly on each row:
+- [x] Add subtle hover highlight and smooth transition styling to schedule rows
+- [x] Add an expandable row detail toggle (or subtle info chevron) showing workout description, level badge, equipment provided, and exact meeting point with a Maps link
+- [x] Show session price cleanly alongside duration/location (or clearly indicate *"Included in packs / €XX drop-in"*)
+- [x] Replace the dead disabled `"Full"` button (e.g. Tuesday 18:30 `Barbell Strength`) with an active `"Join waitlist"` button
+- [x] Reflect user reservation state directly on each row:
   - `"Booked ✓"` badge + inline `"Cancel"` action when already booked
   - `"On waitlist ✓"` badge + `"Leave"` option when waitlisted
 
