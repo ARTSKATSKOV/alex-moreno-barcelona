@@ -16,4 +16,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://alexmoreno.fit/sitemap.xml
+Sitemap: https://alex-moreno-barcelona-bd58.vercel.app/sitemap.xml

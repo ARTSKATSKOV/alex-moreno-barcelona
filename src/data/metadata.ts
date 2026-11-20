@@ -1,6 +1,6 @@
 import { CONTACT, FAQ_ITEMS } from "@/data/site";
 
-const DEFAULT_SITE_URL = "https://alexmoreno.fit";
+const DEFAULT_SITE_URL = "https://alex-moreno-barcelona-bd58.vercel.app";
 
 function resolveSiteUrl(): string {
   const envUrl =

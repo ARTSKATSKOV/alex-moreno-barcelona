@@ -9,6 +9,7 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider } from "@/hooks/use-language";
 import { SITE_METADATA } from "@/data/metadata";
@@ -142,6 +143,7 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster position="bottom-right" />
+        <Analytics />
       </LanguageProvider>
     </QueryClientProvider>
   );
