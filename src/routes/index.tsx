@@ -1,12 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { MapPin, Clock, Backpack, Check, X, CalendarCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, Backpack, CalendarCheck, Check, Clock, MapPin, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Schedule } from "@/components/site/Schedule";
 import { BookingSheet, type BookingSheetMode } from "@/components/site/BookingSheet";
 import { MyBookingsSheet } from "@/components/site/MyBookingsSheet";
-import { type Session } from "@/data/schedule";
+import { Formats } from "@/components/site/Formats";
+import { Pricing } from "@/components/site/Pricing";
+import { Locations } from "@/components/site/Locations";
+import { Faq } from "@/components/site/Faq";
+import { Footer } from "@/components/site/Footer";
+import {
+  DAYS,
+  getNextAvailableSession,
+  type NextSessionMatch,
+  type Session,
+} from "@/data/schedule";
+import { PROOF_STATS, TESTIMONIALS } from "@/data/site";
 import { useBookings } from "@/hooks/use-bookings";
 import { useLanguage } from "@/hooks/use-language";
 import hero from "@/assets/hero.jpg";
@@ -38,34 +49,11 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const scrollToSchedule = () =>
-  document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth" });
-
-const testimonials = [
-  {
-    q: "Three sessions a week, never longer than an hour. Deadlift up 40 kg since March.",
-    n: "Laura, 36",
-    r: "Product Manager",
-  },
-  {
-    q: "Every session has a plan. I just show up and do the work.",
-    n: "Tom, 41",
-    r: "Engineer, relocated from London",
-  },
-  {
-    q: "The 7am beach sessions fit before my first call. Haven't missed a week.",
-    n: "Marta, 29",
-    r: "Consultant",
-  },
-  {
-    q: "Back pain gone after two months of mobility and strength work.",
-    n: "Daniel, 45",
-    r: "Lawyer",
-  },
-];
+const scrollToId = (id: string) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
 function Index() {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
   const {
     sessions,
     bookings,
@@ -84,6 +72,12 @@ function Index() {
     sessionId: string | null;
   }>({ open: false, mode: "book", sessionId: null });
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
+  const [locationFilter, setLocationFilter] = useState<string | null>(null);
+  const [nextAvailable, setNextAvailable] = useState<NextSessionMatch | null>(null);
+
+  useEffect(() => {
+    setNextAvailable(getNextAvailableSession(sessions, new Date()));
+  }, [sessions]);
 
   const activeSession = sheetState.sessionId
     ? (sessions.find((s) => s.id === sheetState.sessionId) ?? null)
@@ -94,6 +88,8 @@ function Index() {
     setSheetState({ open: true, mode: "book", sessionId: session.id });
   const openWaitlistSheet = (session: Session) =>
     setSheetState({ open: true, mode: "waitlist", sessionId: session.id });
+  const openInquirySheet = () => setSheetState({ open: true, mode: "inquiry", sessionId: null });
+
   const handleCancelBooking = (session: Session) => {
     cancel(session.id);
     toast.info(t.toasts.cancelled(session.name));
@@ -101,6 +97,10 @@ function Index() {
   const handleLeaveWaitlist = (session: Session) => {
     leaveWaitlist(session.id);
     toast.info(t.toasts.leftWaitlist(session.name));
+  };
+  const handleSelectLocation = (spot: string) => {
+    setLocationFilter(spot);
+    scrollToId("schedule");
   };
 
   return (
@@ -112,7 +112,8 @@ function Index() {
           </span>
           <nav className="flex items-center gap-4 text-sm">
             <button
-              onClick={scrollToSchedule}
+              type="button"
+              onClick={() => scrollToId("schedule")}
               className="hidden text-muted-foreground hover:text-foreground sm:block cursor-pointer"
             >
               {t.nav.schedule}
@@ -130,7 +131,7 @@ function Index() {
                 </span>
               )}
             </button>
-            <Button size="sm" className="font-semibold" onClick={scrollToSchedule}>
+            <Button size="sm" className="font-semibold" onClick={() => scrollToId("schedule")}>
               {t.nav.bookCta}
             </Button>
           </nav>
@@ -145,37 +146,80 @@ function Index() {
           className="absolute inset-0 size-full object-cover object-[60%_center]"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-14 pt-28 md:pb-20">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Strength & Conditioning · Barcelona
-          </p>
-          <h1 className="mt-4 max-w-3xl text-6xl font-extrabold sm:text-7xl md:text-8xl">
-            Get stronger.
-            <br />
-            Stay consistent.
-            <br />
-            <span className="text-primary">In under an hour.</span>
-          </h1>
-          <p className="mt-6 max-w-md text-base text-muted-foreground md:text-lg">
-            Structured sessions in the studio or outdoors — parks, beach and city. Built around your
-            calendar.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-6">
-            <Button
-              size="lg"
-              className="h-13 px-8 text-base font-semibold"
-              onClick={scrollToSchedule}
-            >
-              Book Your Session
-            </Button>
-            <button
-              onClick={scrollToSchedule}
-              className="text-sm font-semibold underline underline-offset-4 hover:text-primary"
-            >
-              View Schedule
-            </button>
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/65 to-background/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/35 to-transparent" />
+
+        <div className="relative mx-auto flex w-full max-w-6xl flex-col justify-between gap-8 px-5 pb-14 pt-28 md:flex-row md:items-end md:pb-20">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              {t.hero.eyebrow}
+            </p>
+            <h1 className="mt-4 max-w-3xl text-6xl font-extrabold sm:text-7xl md:text-8xl">
+              {t.hero.headlineLine1}
+              <br />
+              {t.hero.headlineLine2}
+              <br />
+              <span className="text-primary">{t.hero.headlineAccent}</span>
+            </h1>
+            <p className="mt-6 max-w-md text-base text-foreground/85 md:text-lg">
+              {t.hero.subtitle}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-6">
+              <Button
+                size="lg"
+                className="h-13 px-8 text-base font-semibold"
+                onClick={() => scrollToId("schedule")}
+              >
+                {t.hero.primaryCta}
+              </Button>
+              <button
+                type="button"
+                onClick={() => scrollToId("pricing")}
+                className="text-sm font-semibold underline underline-offset-4 hover:text-primary cursor-pointer"
+              >
+                {t.hero.secondaryCta}
+              </button>
+            </div>
           </div>
+
+          {nextAvailable && (
+            <button
+              type="button"
+              onClick={() => openBookSheet(nextAvailable.session)}
+              className="group w-full max-w-xs rounded-sm border border-border/90 bg-background/85 p-4 text-left backdrop-blur transition-colors hover:border-primary cursor-pointer"
+            >
+              <div className="flex items-center justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                <span>{t.hero.nextAvailableLabel}</span>
+                <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+              </div>
+              <p className="mt-2 font-display text-2xl font-bold uppercase leading-tight">
+                {nextAvailable.session.name}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {nextAvailable.isToday ? t.hero.today : DAYS[nextAvailable.session.day]} ·{" "}
+                {nextAvailable.session.time} · {nextAvailable.session.spot}
+              </p>
+              <p className="mt-2 text-xs font-semibold text-foreground">
+                {t.hero.spotsLeft(nextAvailable.session.spots)}
+              </p>
+            </button>
+          )}
+        </div>
+      </section>
+
+      {/* Proof Metric Strip */}
+      <section aria-label="Coaching metrics" className="border-t border-border bg-background">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 divide-x divide-y divide-border sm:grid-cols-4 sm:divide-y-0">
+          {PROOF_STATS.map((stat) => (
+            <div key={stat.id} className="px-5 py-7 text-center sm:text-left">
+              <p className="font-display text-4xl font-extrabold tabular-nums text-primary md:text-5xl">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                {locale === "es" ? stat.labelEs : stat.labelEn}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -187,10 +231,22 @@ function Index() {
         onLeaveWaitlist={handleLeaveWaitlist}
         isBooked={isBooked}
         isWaitlisted={isWaitlisted}
+        locationFilter={locationFilter}
+        onClearLocationFilter={() => setLocationFilter(null)}
       />
 
-      {/* Trust */}
-      <section className="py-16 md:py-24">
+      <Formats onPickSlot={() => scrollToId("schedule")} onInquirePrivate={openInquirySheet} />
+
+      <Pricing onSelectPlan={() => scrollToId("schedule")} />
+
+      <Locations
+        sessions={sessions}
+        activeLocation={locationFilter}
+        onSelectLocation={handleSelectLocation}
+      />
+
+      {/* Trust / Coach */}
+      <section id="coach" className="scroll-mt-16 border-t border-border py-16 md:py-24">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-2 md:items-center">
           <img
             src={coach}
@@ -200,22 +256,34 @@ function Index() {
           />
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              Your coach
+              {t.sections.coachEyebrow}
             </p>
             <h2 className="mt-2 text-5xl font-bold md:text-6xl">Alex Moreno</h2>
             <ul className="mt-8 space-y-5">
               {[
-                ["10 years coaching", "NSCA-certified. 1,200+ clients trained in Barcelona."],
                 [
-                  "Programmed, not improvised",
-                  "Every session follows a progressive plan you can track.",
+                  locale === "es" ? "10 años entrenando" : "10 years coaching",
+                  locale === "es"
+                    ? "Certificación NSCA. Más de 1.200 clientes entrenados en Barcelona."
+                    : "NSCA-certified. 1,200+ clients trained in Barcelona.",
                 ],
-                ["Built for consistency", "Fixed weekly slots. Average client stays 14 months."],
-              ].map(([t, d]) => (
-                <li key={t} className="flex gap-4 border-l-2 border-primary pl-4">
+                [
+                  locale === "es" ? "Programado, no improvisado" : "Programmed, not improvised",
+                  locale === "es"
+                    ? "Cada sesión sigue un plan progresivo que puedes medir."
+                    : "Every session follows a progressive plan you can track.",
+                ],
+                [
+                  locale === "es" ? "Pensado para ser constante" : "Built for consistency",
+                  locale === "es"
+                    ? "Horarios semanales fijos. Permanencia media de 14 meses."
+                    : "Fixed weekly slots. Average client stays 14 months.",
+                ],
+              ].map(([title, desc]) => (
+                <li key={title} className="flex gap-4 border-l-2 border-primary pl-4">
                   <div>
-                    <p className="font-semibold">{t}</p>
-                    <p className="text-sm text-muted-foreground">{d}</p>
+                    <p className="font-semibold">{title}</p>
+                    <p className="text-sm text-muted-foreground">{desc}</p>
                   </div>
                 </li>
               ))}
@@ -251,14 +319,21 @@ function Index() {
       {/* Social proof */}
       <section className="border-y border-border bg-card/40 py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-5">
-          <h2 className="text-5xl font-bold md:text-6xl">Clients</h2>
+          <h2 className="text-5xl font-bold md:text-6xl">{t.sections.clientsTitle}</h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {testimonials.map((t) => (
-              <blockquote key={t.n} className="rounded-sm border border-border bg-background p-6">
-                <p className="text-lg">"{t.q}"</p>
+            {TESTIMONIALS.map((item) => (
+              <blockquote
+                key={item.id}
+                className="rounded-sm border border-border bg-background p-6"
+              >
+                <p className="text-lg">
+                  &ldquo;{locale === "es" ? item.quoteEs : item.quoteEn}&rdquo;
+                </p>
                 <footer className="mt-4 text-sm">
-                  <span className="font-semibold">{t.n}</span>{" "}
-                  <span className="text-muted-foreground">· {t.r}</span>
+                  <span className="font-semibold">{item.name}</span>{" "}
+                  <span className="text-muted-foreground">
+                    · {locale === "es" ? item.roleEs : item.roleEn}
+                  </span>
                 </footer>
               </blockquote>
             ))}
@@ -289,7 +364,7 @@ function Index() {
       {/* Logistics */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-5">
-          <h2 className="text-5xl font-bold md:text-6xl">Logistics</h2>
+          <h2 className="text-5xl font-bold md:text-6xl">{t.sections.logisticsTitle}</h2>
           <div className="mt-10 grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
             {[
               [MapPin, "Base", "Studio in Eixample, Barcelona, Spain."],
@@ -314,19 +389,21 @@ function Index() {
                 "Not for",
                 "Quick-fix diets, extreme cutting, or anyone looking for entertainment over training.",
               ],
-            ].map(([Icon, t, d]) => {
+            ].map(([Icon, title, desc]) => {
               const I = Icon as typeof MapPin;
               return (
-                <div key={t as string} className="bg-background p-6">
+                <div key={title as string} className="bg-background p-6">
                   <I className="size-5 text-primary" />
-                  <p className="mt-3 font-semibold">{t as string}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{d as string}</p>
+                  <p className="mt-3 font-semibold">{title as string}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{desc as string}</p>
                 </div>
               );
             })}
           </div>
         </div>
       </section>
+
+      <Faq />
 
       {/* Final CTA */}
       <section className="relative overflow-hidden">
@@ -339,31 +416,30 @@ function Index() {
         <div className="absolute inset-0 bg-background/80" />
         <div className="relative mx-auto max-w-6xl px-5 py-24 text-center md:py-32">
           <h2 className="text-6xl font-extrabold md:text-8xl">
-            Pick a slot.
+            {t.sections.finalHeadline1}
             <br />
-            <span className="text-primary">Show up.</span>
+            <span className="text-primary">{t.sections.finalHeadline2}</span>
           </h2>
-          <p className="mx-auto mt-5 max-w-sm text-muted-foreground">
-            Studio and outdoor sessions every day of the week.
-          </p>
+          <p className="mx-auto mt-5 max-w-sm text-muted-foreground">{t.sections.finalSubtitle}</p>
           <Button
             size="lg"
             className="mt-8 h-13 px-10 text-base font-semibold"
-            onClick={scrollToSchedule}
+            onClick={() => scrollToId("schedule")}
           >
-            Book Your Session
+            {t.nav.bookCta}
           </Button>
         </div>
       </section>
 
-      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        © 2026 Alex Moreno · Barcelona, Spain
-      </footer>
+      <Footer />
 
       {/* Mobile sticky CTA */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden">
-        <Button className="h-12 w-full text-base font-semibold" onClick={scrollToSchedule}>
-          Book Your Session
+        <Button
+          className="h-12 w-full text-base font-semibold"
+          onClick={() => scrollToId("schedule")}
+        >
+          {t.nav.bookCta}
         </Button>
       </div>
 
@@ -385,7 +461,7 @@ function Index() {
         waitlist={waitlist}
         onCancelBooking={handleCancelBooking}
         onLeaveWaitlist={handleLeaveWaitlist}
-        onBrowseSchedule={scrollToSchedule}
+        onBrowseSchedule={() => scrollToId("schedule")}
       />
     </div>
   );

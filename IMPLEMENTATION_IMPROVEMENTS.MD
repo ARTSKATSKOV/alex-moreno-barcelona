@@ -9,7 +9,7 @@
 - [x] **Phase 1:** Data Architecture & Client-Side Foundations
 - [x] **Phase 2:** Schedule Experience Power-Up
 - [x] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
-- [ ] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
+- [x] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
 - [ ] **Phase 5:** Navigation, Mobile Ergonomics, Imagery & Visual Polish
 - [ ] **Phase 6:** Accessibility, SEO Metadata & Verification
 
@@ -115,39 +115,39 @@ Upgrade `src/components/site/BookingSheet.tsx` and wire up client-side booking m
 Fill the decision-making gaps in `src/routes/index.tsx` by breaking new sections into clean components under `src/components/site/`.
 
 ### 4.1 Hero Conversion Upgrade
-- [ ] Remove the redundant `Book Your Session` + `View Schedule` duplicate action (both currently call `scrollToSchedule`):
+- [x] Remove the redundant `Book Your Session` + `View Schedule` duplicate action (both currently call `scrollToSchedule`):
   - Keep primary CTA scrolling to `#schedule`
   - Change secondary link to jump to `#pricing` or `#coach` (*"How it works & pricing"*)
-- [ ] Add a compact **"Next Available Session"** live shortcut card/pill in the hero (computed via `getNextAvailableSession`), allowing 1-click jump straight into booking the next open class
-- [ ] Add a subtle left-to-right dark scrim gradient alongside the bottom gradient and bump hero subtitle contrast (`text-foreground/80`) so text remains razor-sharp over the sunrise background on all screen sizes
+- [x] Add a compact **"Next Available Session"** live shortcut card/pill in the hero (computed via `getNextAvailableSession`), allowing 1-click jump straight into booking the next open class
+- [x] Add a subtle left-to-right dark scrim gradient alongside the bottom gradient and bump hero subtitle contrast (`text-foreground/80`) so text remains razor-sharp over the sunrise background on all screen sizes
 
 ### 4.2 Proof Metric Strip & Training Format Clarity
-- [ ] Extract coach proof metrics (`10+ Years Coaching`, `1,200+ Clients`, `14 Mo Avg. Retention`, `Max 6–12 / Class`) into a bold, scannable `Barlow Condensed` stat bar
-- [ ] Add a clear **Small Group vs. Private 1:1** section (or side-by-side cards) explaining:
+- [x] Extract coach proof metrics (`10+ Years Coaching`, `1,200+ Clients`, `14 Mo Avg. Retention`, `Max 6–12 / Class`) into a bold, scannable `Barlow Condensed` stat bar
+- [x] Add a clear **Small Group vs. Private 1:1** section (or side-by-side cards) explaining:
   - What small-group sessions include (capped 6–12, programmed progression, studio + outdoor access)
   - What 1:1 personal training includes (custom schedule, tailored programming) with a direct `"Inquire for 1:1"` CTA opening the inquiry sheet
 
 ### 4.3 Pricing & First-Timer Trial (`src/components/site/Pricing.tsx`)
-- [ ] Add a focused, scannable `#pricing` section with transparent frontend pricing tiers:
+- [x] Add a focused, scannable `#pricing` section with transparent frontend pricing tiers:
   - **First Trial Session** (highlighted low-friction entry option)
   - **Drop-In** (single studio or outdoor class)
   - **Session Packs** (e.g. 5-pack / 10-pack with per-session savings)
   - **Monthly Consistent Plan** (e.g. 2x or 3x/week recurring slots)
-- [ ] Include a clear note explaining how payment works on-site / upon confirmation (no backend payment claim) and CTA buttons that scroll to `#schedule`
+- [x] Include a clear note explaining how payment works on-site / upon confirmation (no backend payment claim) and CTA buttons that scroll to `#schedule`
 
 ### 4.4 Interactive Barcelona Locations (`src/components/site/Locations.tsx`)
-- [ ] Elevate the 5 training spots (`Eixample Studio`, `Barceloneta Beach`, `Parc de la Ciutadella`, `Montjuïc`, `Poblenou`) from plain Logistics text into interactive location cards
-- [ ] Show neighborhood, indoor/outdoor badge, exact meeting landmark, nearest metro, and Google Maps link on each card
-- [ ] Make each card's `"See sessions here"` button smoothly scroll to `#schedule` with that exact location pre-filtered
+- [x] Elevate the 5 training spots (`Eixample Studio`, `Barceloneta Beach`, `Parc de la Ciutadella`, `Montjuïc`, `Poblenou`) from plain Logistics text into interactive location cards
+- [x] Show neighborhood, indoor/outdoor badge, exact meeting landmark, nearest metro, and Google Maps link on each card
+- [x] Make each card's `"See sessions here"` button smoothly scroll to `#schedule` with that exact location pre-filtered
 
 ### 4.5 Objection-Busting FAQ & Expanded Footer (`src/components/site/Faq.tsx`, `src/components/site/Footer.tsx`)
-- [ ] Build a compact `#faq` accordion using existing `src/components/ui/accordion.tsx` covering:
+- [x] Build a compact `#faq` accordion using existing `src/components/ui/accordion.tsx` covering:
   - Rain / bad weather plan for outdoor sessions
   - Cancellation & rescheduling window
   - Beginner suitability & scaling
   - Coaching languages (`EN / ES / CAT`)
   - Equipment, showers/lockers at Eixample Studio, and what to bring
-- [ ] Expand the minimal 1-line footer into a practical local footer:
+- [x] Expand the minimal 1-line footer into a practical local footer:
   - Quick anchor links (`Schedule`, `Pricing`, `Locations`, `Coach`, `FAQ`)
   - Direct contact actions (**WhatsApp**, **Instagram**, **Email**)
   - Studio neighborhood & hours summary
