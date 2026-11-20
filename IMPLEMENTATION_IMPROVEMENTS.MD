@@ -8,7 +8,7 @@
 
 - [x] **Phase 1:** Data Architecture & Client-Side Foundations
 - [x] **Phase 2:** Schedule Experience Power-Up
-- [ ] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
+- [x] **Phase 3:** Booking Sheet, Waitlist & "My Bookings"
 - [ ] **Phase 4:** Conversion & Content Sections (Pricing, Formats, Locations, FAQ, Contact)
 - [ ] **Phase 5:** Navigation, Mobile Ergonomics, Imagery & Visual Polish
 - [ ] **Phase 6:** Accessibility, SEO Metadata & Verification
@@ -87,26 +87,26 @@ Transform `src/components/site/Schedule.tsx` from a basic static day list into a
 Upgrade `src/components/site/BookingSheet.tsx` and wire up client-side booking management and feedback.
 
 ### 3.1 Enhanced Booking Sheet (`src/components/site/BookingSheet.tsx`)
-- [ ] Support multiple sheet modes cleanly:
+- [x] Support multiple sheet modes cleanly:
   - **Book a spot** (standard class reservation)
   - **Join waitlist** (for full sessions, adjusted copy and confirmation state)
   - **Private 1:1 inquiry** (captures preferred days/times & goal without consuming a group spot)
-- [ ] Sync displayed availability from the live `sessions` array rather than holding a stale snapshot in `active`
-- [ ] Add proper form validation and whitespace trimming (using already-installed `zod` + `react-hook-form` or clean controlled validation)
-- [ ] Add optional fields:
+- [x] Sync displayed availability from the live `sessions` array rather than holding a stale snapshot in `active`
+- [x] Add proper form validation and whitespace trimming (using already-installed `zod` + `react-hook-form` or clean controlled validation)
+- [x] Add optional fields:
   - **WhatsApp / Phone** (for outdoor weather updates or pin changes)
   - **Notes** (*"First time? Any injuries or goals?"*)
-- [ ] Display transparent expectations right above the submit CTA: drop-in price, *"Pay on arrival — no card required"*, and *"Free cancellation up to 12h before"*
-- [ ] Wrap confirmation title/description in proper `<SheetHeader>` semantics for accessibility
+- [x] Display transparent expectations right above the submit CTA: drop-in price, *"Pay on arrival — no card required"*, and *"Free cancellation up to 12h before"*
+- [x] Wrap confirmation title/description in proper `<SheetHeader>` semantics for accessibility
 
 ### 3.2 Post-Booking Delight & Management
-- [ ] Add **"Add to Calendar"** actions on the confirmation screen:
+- [x] Add **"Add to Calendar"** actions on the confirmation screen:
   - `Download .ics` button (Apple Calendar / Outlook)
   - `Google Calendar` deep-link button
-- [ ] Build a **"My Bookings"** slide-over drawer (or tab inside a sheet) triggered from a compact header badge (`My Bookings (N)`):
+- [x] Build a **"My Bookings"** slide-over drawer (or tab inside a sheet) triggered from a compact header badge (`My Bookings (N)`):
   - Lists upcoming booked and waitlisted sessions from `localStorage`
   - Includes one-click `.ics` export, Maps pin link, and `Cancel booking` (restoring the spot in `Schedule`)
-- [ ] Wire up the already-mounted `sonner` `<Toaster />` (`src/routes/__root.tsx`) for crisp non-blocking feedback toasts on booking, waitlist signup, cancellation, and `.ics` download
+- [x] Wire up the already-mounted `sonner` `<Toaster />` (`src/routes/__root.tsx`) for crisp non-blocking feedback toasts on booking, waitlist signup, cancellation, and `.ics` download
 
 ---
 
