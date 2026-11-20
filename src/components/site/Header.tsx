@@ -132,6 +132,7 @@ export function Header({ savedCount, onOpenMyBookings, onNavigate }: HeaderProps
 
           <button
             type="button"
+            aria-label={t.nav.myBookings}
             onClick={onOpenMyBookings}
             className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
           >

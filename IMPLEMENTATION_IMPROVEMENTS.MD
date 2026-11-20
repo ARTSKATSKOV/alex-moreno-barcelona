@@ -206,5 +206,5 @@ Ensure the upgraded frontend is accessible, clean in link previews, and reliably
   - Booking + waitlist flow, duplicate-booking prevention, and `localStorage` persistence
   - `.ics` calendar string generation
   - `EN | ES` language switching
-- [ ] Verify responsive visual QA across **375px** (small mobile), **768px** (tablet), and **1440px** (desktop) viewports *(live browser preview)*
+- [x] Verify responsive visual QA across **375px** (small mobile), **768px** (tablet), and **1440px** (desktop) viewports *(verified live in browser at desktop & 375px mobile)*
 - [x] Run `npm run lint`, `npm test`, and `npm run build` with zero errors or warnings

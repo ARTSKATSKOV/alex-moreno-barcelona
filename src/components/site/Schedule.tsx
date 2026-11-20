@@ -383,7 +383,7 @@ export function Schedule({
 
         {viewMode === "day" ? (
           <Tabs value={selectedDay} onValueChange={setSelectedDay} className="mt-6">
-            <TabsList className="flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-sm border border-border bg-background/50 p-1 sm:grid sm:grid-cols-7">
+            <TabsList className="no-scrollbar flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-sm border border-border bg-background/50 p-1 sm:grid sm:grid-cols-7">
               {weekDays.map((d) => {
                 const count = filteredSessions.filter((s) => s.day === d.day).length;
                 return (

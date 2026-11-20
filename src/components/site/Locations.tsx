@@ -47,7 +47,14 @@ export function Locations({ sessions, activeLocation, onSelectLocation }: Locati
                     {loc.place === "Outdoor" ? t.schedule.outdoor : t.schedule.studio}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {count} {locale === "es" ? "sesiones / sem" : "sessions / wk"}
+                    {count}{" "}
+                    {locale === "es"
+                      ? count === 1
+                        ? "sesión / sem"
+                        : "sesiones / sem"
+                      : count === 1
+                        ? "session / wk"
+                        : "sessions / wk"}
                   </span>
                 </div>
 
