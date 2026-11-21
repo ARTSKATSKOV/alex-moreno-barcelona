@@ -5,7 +5,7 @@ const DEFAULT_SITE_URL = "https://alex-moreno-barcelona-bd58.vercel.app";
 function resolveSiteUrl(): string {
   const envUrl =
     typeof import.meta !== "undefined" && import.meta.env
-      ? (import.meta.env["VITE_SITE_URL"] as string | undefined)
+      ? import.meta.env.VITE_SITE_URL
       : undefined;
   const raw = (envUrl && envUrl.trim()) || DEFAULT_SITE_URL;
   return raw.replace(/\/+$/, "");

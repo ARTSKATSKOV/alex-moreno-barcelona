@@ -16,6 +16,9 @@ import { SITE_METADATA } from "@/data/metadata";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { captureError, initSentry } from "../lib/sentry";
+
+initSentry();
 
 function NotFoundComponent() {
   return (
@@ -46,6 +49,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    captureError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -136,6 +140,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    initSentry();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
