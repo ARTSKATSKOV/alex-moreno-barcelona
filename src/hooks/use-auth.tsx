@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Session, SupabaseClient, User } from "@supabase/supabase-js";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { setSentryUser } from "@/lib/sentry";
-import type { AccountStatus, Database, Profile, UserRole } from "@/types/database";
+import type { AccountStatus, Database, Profile, Tables, UserRole } from "@/types/database";
 
 export interface AuthContextValue {
   user: User | null;
@@ -35,6 +35,25 @@ export interface AuthProviderProps {
   configured?: boolean;
 }
 
+function normalizeProfile(row: Tables<"profiles">): Profile {
+  const role: UserRole =
+    row.role === "admin" || row.role === "client" || row.role === "user" ? row.role : "user";
+  const accountStatus: AccountStatus =
+    row.account_status === "banned" ||
+    row.account_status === "rejected" ||
+    row.account_status === "active"
+      ? row.account_status
+      : "active";
+  const locale = row.locale === "es" ? "es" : "en";
+
+  return {
+    ...row,
+    role,
+    account_status: accountStatus,
+    locale,
+  };
+}
+
 async function fetchUserProfile(
   client: SupabaseClient<Database>,
   userId: string,
@@ -46,11 +65,11 @@ async function fetchUserProfile(
       .eq("id", userId)
       .maybeSingle();
 
-    if (error) {
+    if (error || !data) {
       return null;
     }
 
-    return data;
+    return normalizeProfile(data);
   } catch {
     return null;
   }

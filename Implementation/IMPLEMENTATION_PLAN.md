@@ -16,7 +16,7 @@
 ## Progress Overview
 
 - [x] **Phase 0:** Supabase Setup, SDKs, Toast Position & Environment Wiring
-- [ ] **Phase 1:** PostgreSQL Schema, Availability Rules, Audit History Tables, Atomic RPCs & RLS
+- [x] **Phase 1:** PostgreSQL Schema, Availability Rules, Audit History Tables, Atomic RPCs & RLS
 - [ ] **Phase 2:** Supabase Auth, RBAC (`user` / `client` / `admin`), Ban/Reject Guards & General User Pages
 - [ ] **Phase 3:** Media Storage Buckets & Upload Pipeline
 - [ ] **Phase 4:** Edge Functions (Booking, Cancellation, Availability Generator, Weather Alerts, Resend Emails) & Live Public Site (`/`, `/sessions/$slug`)
@@ -308,12 +308,12 @@ Every new page (Auth, Profile, Client Portal, Admin Portal) **must** match the e
 
 ### Phase 1: Database Schema, Availability Engine, Audit Tables, RPCs & RLS
 
-- [ ] Create all 10 core tables (`profiles`, `locations`, `session_types`, `session_availability_rules`, `session_availability_exceptions`, `sessions`, `bookings`, `private_inquiries`, `coach_client_notes`, `studio_settings`)
-- [ ] Create all 6 history/audit tables (`user_login_history`, `session_history`, `booking_history`, `user_moderation_history`, `availability_change_history`, `email_notification_logs`)
-- [ ] Implement `is_admin()`, `is_active_account()`, `handle_new_user()`, `book_session_atomic()`, `cancel_booking_atomic()`, and automatic `session_history` / `booking_history` triggers
-- [ ] Create `public.sessions_with_availability` view and enable strict RLS policies on every table (verified zero PII leakage & zero self-role-escalation)
-- [ ] Seed Barcelona `locations`, `session_types`, ongoing `session_availability_rules` (the 15 weekly classes), initial 4 weeks of dated `sessions`, and default `studio_settings`
-- [ ] Promote coach account to `role = 'admin'` and generate TypeScript DB types into `src/types/database.ts`
+- [x] Create all 10 core tables (`profiles`, `locations`, `session_types`, `session_availability_rules`, `session_availability_exceptions`, `sessions`, `bookings`, `private_inquiries`, `coach_client_notes`, `studio_settings`)
+- [x] Create all 6 history/audit tables (`user_login_history`, `session_history`, `booking_history`, `user_moderation_history`, `availability_change_history`, `email_notification_logs`)
+- [x] Implement `is_admin()`, `is_active_account()`, `handle_new_user()`, `book_session_atomic()`, `cancel_booking_atomic()`, and automatic `session_history` / `booking_history` triggers
+- [x] Create `public.sessions_with_availability` view and enable strict RLS policies on every table (verified zero PII leakage & zero self-role-escalation)
+- [x] Seed Barcelona `locations`, `session_types`, ongoing `session_availability_rules` (the 15 weekly classes), initial 4 weeks of dated `sessions`, and default `studio_settings`
+- [x] Generate TypeScript DB types into `src/types/database.ts` _(coach account promotion to `role = 'admin'` ready once coach registers in Phase 2)_
 
 ### Phase 2: Auth, RBAC Route Guards & General User Pages
 
