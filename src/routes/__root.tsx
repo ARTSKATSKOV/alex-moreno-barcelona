@@ -11,8 +11,11 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/hooks/use-auth";
 import { LanguageProvider } from "@/hooks/use-language";
 import { SITE_METADATA } from "@/data/metadata";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -83,7 +86,14 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const ROOT_TOASTER_POSITION = "top-left" as const;
+
+export interface RouterAppContext {
+  queryClient: QueryClient;
+  supabase?: SupabaseClient<Database>;
+}
+
+export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -147,12 +157,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <Toaster position="bottom-right" />
-        <Analytics />
-      </LanguageProvider>
+      <AuthProvider>
+        <LanguageProvider>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          <Toaster position={ROOT_TOASTER_POSITION} />
+          <Analytics />
+        </LanguageProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

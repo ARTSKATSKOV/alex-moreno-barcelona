@@ -41,3 +41,8 @@ export function captureError(error: unknown, context?: Record<string, unknown>):
   if (typeof window === "undefined") return;
   Sentry.captureException(error, context ? { extra: context } : undefined);
 }
+
+export function setSentryUser(user: { id: string } | null): void {
+  if (typeof window === "undefined") return;
+  Sentry.setUser(user ? { id: user.id } : null);
+}
