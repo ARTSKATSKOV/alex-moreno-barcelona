@@ -1,7 +1,25 @@
 import { useEffect, useState } from "react";
-import { CalendarCheck, Menu } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import {
+  CalendarCheck,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  ShieldCheck,
+  User as UserIcon,
+} from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 import { useLanguage } from "@/hooks/use-language";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -20,8 +38,18 @@ export interface HeaderProps {
   onNavigate: (id: string) => void;
 }
 
+function getInitials(name?: string | null, email?: string | null): string {
+  const source = (name && name.trim()) || email || "AM";
+  const [first, second] = source.split(/\s+/).filter(Boolean);
+  if (first && second) {
+    return `${first.charAt(0)}${second.charAt(0)}`.toUpperCase();
+  }
+  return source.slice(0, 2).toUpperCase();
+}
+
 export function Header({ savedCount, onOpenMyBookings, onNavigate }: HeaderProps) {
   const { locale, setLocale, t } = useLanguage();
+  const { isAuthenticated, isAdmin, profile, user } = useAuth();
   const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -145,13 +173,99 @@ export function Header({ savedCount, onOpenMyBookings, onNavigate }: HeaderProps
             )}
           </button>
 
-          <Button
-            size="sm"
-            className="hidden font-semibold sm:inline-flex"
-            onClick={() => handleLinkClick("schedule")}
-          >
-            {t.nav.bookCta}
-          </Button>
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Account menu"
+                  className="inline-flex items-center gap-2 rounded-sm border border-border p-0.5 pr-2 text-xs font-semibold transition-colors hover:border-primary/60 hover:bg-accent cursor-pointer"
+                >
+                  <Avatar className="size-7 rounded-sm">
+                    <AvatarImage
+                      src={profile?.avatar_url ?? undefined}
+                      alt={profile?.full_name ?? ""}
+                    />
+                    <AvatarFallback className="rounded-sm bg-primary/15 font-display text-xs font-bold text-primary">
+                      {getInitials(profile?.full_name, user?.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="hidden max-w-24 truncate sm:inline">
+                    {profile?.full_name?.split(" ")[0] ?? t.nav.profile}
+                  </span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-sm border-border bg-card">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-0.5">
+                    <p className="truncate text-sm font-semibold text-foreground">
+                      {profile?.full_name ?? user?.email}
+                    </p>
+                    <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {isAdmin && (
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link to="/admin">
+                      <ShieldCheck className="mr-2 size-4 text-primary" />
+                      <span>{t.nav.adminPortal}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/client">
+                    <LayoutDashboard className="mr-2 size-4" />
+                    <span>{t.nav.dashboard}</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    onOpenMyBookings();
+                  }}
+                >
+                  <CalendarCheck className="mr-2 size-4" />
+                  <span>{t.nav.myBookings}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/profile">
+                    <UserIcon className="mr-2 size-4" />
+                    <span>{t.nav.profile}</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  asChild
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <Link to="/logout">
+                    <LogOut className="mr-2 size-4" />
+                    <span>{t.nav.logOut}</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="hidden items-center gap-1.5 sm:flex">
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2.5 text-xs font-semibold"
+              >
+                <Link to="/login" search={{ redirect: undefined }}>
+                  {t.nav.logIn}
+                </Link>
+              </Button>
+              <Button asChild size="sm" className="h-8 px-3 text-xs font-semibold">
+                <Link to="/signup" search={{ redirect: undefined }}>
+                  {t.nav.signUp}
+                </Link>
+              </Button>
+            </div>
+          )}
 
           <button
             type="button"
@@ -226,8 +340,83 @@ export function Header({ savedCount, onOpenMyBookings, onNavigate }: HeaderProps
             </div>
           </div>
 
+          <div className="mt-6 space-y-2 border-t border-border pt-5">
+            {isAuthenticated ? (
+              <>
+                {isAdmin && (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-10 w-full justify-start gap-2 font-semibold"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Link to="/admin">
+                      <ShieldCheck className="size-4 text-primary" />
+                      <span>{t.nav.adminPortal}</span>
+                    </Link>
+                  </Button>
+                )}
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-10 w-full justify-start gap-2 font-semibold"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/client">
+                    <LayoutDashboard className="size-4" />
+                    <span>{t.nav.dashboard}</span>
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-10 w-full justify-start gap-2 font-semibold"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/profile">
+                    <UserIcon className="size-4" />
+                    <span>{t.nav.profile}</span>
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-10 w-full justify-start gap-2 font-semibold text-destructive hover:text-destructive"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/logout">
+                    <LogOut className="size-4" />
+                    <span>{t.nav.logOut}</span>
+                  </Link>
+                </Button>
+              </>
+            ) : (
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-10 font-semibold"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/login" search={{ redirect: undefined }}>
+                    {t.nav.logIn}
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  className="h-10 font-semibold"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/signup" search={{ redirect: undefined }}>
+                    {t.nav.signUp}
+                  </Link>
+                </Button>
+              </div>
+            )}
+          </div>
+
           <Button
-            className="mt-6 h-11 w-full font-semibold"
+            className="mt-4 h-11 w-full font-semibold"
             onClick={() => handleLinkClick("schedule")}
           >
             {t.nav.bookCta}

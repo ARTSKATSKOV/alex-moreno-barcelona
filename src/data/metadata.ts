@@ -124,6 +124,16 @@ export function buildFaqJsonLd() {
   };
 }
 
+export function buildPrivateHead(title: string, description?: string) {
+  return {
+    meta: [
+      { title: `${title} — Alex Moreno` },
+      ...(description ? [{ name: "description", content: description }] : []),
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  };
+}
+
 export function buildHomeHead() {
   const canonicalUrl = absoluteUrl("/");
   const ogImageUrl = absoluteUrl(SITE_METADATA.ogImage.path);

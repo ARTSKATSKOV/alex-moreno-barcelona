@@ -17,7 +17,7 @@
 
 - [x] **Phase 0:** Supabase Setup, SDKs, Toast Position & Environment Wiring
 - [x] **Phase 1:** PostgreSQL Schema, Availability Rules, Audit History Tables, Atomic RPCs & RLS
-- [ ] **Phase 2:** Supabase Auth, RBAC (`user` / `client` / `admin`), Ban/Reject Guards & General User Pages
+- [x] **Phase 2:** Supabase Auth, RBAC (`user` / `client` / `admin`), Ban/Reject Guards & General User Pages
 - [ ] **Phase 3:** Media Storage Buckets & Upload Pipeline
 - [ ] **Phase 4:** Edge Functions (Booking, Cancellation, Availability Generator, Weather Alerts, Resend Emails) & Live Public Site (`/`, `/sessions/$slug`)
 - [ ] **Phase 5:** Client Portal (`/client/*`)
@@ -317,16 +317,16 @@ Every new page (Auth, Profile, Client Portal, Admin Portal) **must** match the e
 
 ### Phase 2: Auth, RBAC Route Guards & General User Pages
 
-- [ ] Configure Supabase Auth Site URL & Redirect URLs (`/auth/callback`, `/reset-password`)
-- [ ] Build `src/lib/auth-guards.ts` (`requireActiveUser`, `requireAdmin`, `redirectIfAuthenticated`) redirecting `banned`/`rejected` users automatically to `/account-restricted`
-- [ ] Build slug-first General User pages adhering strictly to the Branding Guide:
-  - [ ] `/signup` (`src/routes/signup.tsx`) — creates `'user'` account, honors `?redirect=`
-  - [ ] `/login` (`src/routes/login.tsx`) — logs login to `user_login_history` via `log-login` Edge Function, routes admins to `/admin` and users/clients to `?redirect` or `/client`
-  - [ ] `/logout` (`src/routes/logout.tsx`) — signs out cleanly, clears caches, shows `top-left` toast, redirects to `/`
-  - [ ] `/forgot-password`, `/reset-password`, `/auth/callback`
-  - [ ] `/profile` (`src/routes/profile.tsx`) — edit personal info, WhatsApp, `EN/ES`, injuries/goals, emergency contact, change password, view recent logins
-  - [ ] `/account-restricted` & `/unauthorized`
-- [ ] Upgrade `src/components/site/Header.tsx` with logged-out (`Log in` / `Sign up`) vs. logged-in avatar menu (`Dashboard`, `My Bookings`, `Profile`, `Log out`, or `Admin Portal` for coach)
+- [x] Configure Supabase Auth Site URL & Redirect URLs (`/auth/callback`, `/reset-password`) _(redirect URLs wired dynamically via `window.location.origin`; also confirm Site URL & Redirect URLs in Supabase Dashboard → Auth → URL Configuration)_
+- [x] Build `src/lib/auth-guards.ts` (`requireActiveUser`, `requireAdmin`, `redirectIfAuthenticated`) redirecting `banned`/`rejected` users automatically to `/account-restricted`
+- [x] Build slug-first General User pages adhering strictly to the Branding Guide:
+  - [x] `/signup` (`src/routes/signup.tsx`) — creates `'user'` account, honors `?redirect=`
+  - [x] `/login` (`src/routes/login.tsx`) — logs login to `user_login_history` via `log-login` Edge Function (with `last_login_at` fallback), routes admins to `/admin` and users/clients to `?redirect` or `/client`
+  - [x] `/logout` (`src/routes/logout.tsx`) — signs out cleanly, clears caches, shows `top-left` toast, redirects to `/`
+  - [x] `/forgot-password`, `/reset-password`, `/auth/callback`
+  - [x] `/profile` (`src/routes/profile.tsx`) — edit personal info, WhatsApp, `EN/ES`, injuries/goals, emergency contact, change password, view recent logins
+  - [x] `/account-restricted` & `/unauthorized`
+- [x] Upgrade `src/components/site/Header.tsx` with logged-out (`Log in` / `Sign up`) vs. logged-in avatar menu (`Dashboard`, `My Bookings`, `Profile`, `Log out`, or `Admin Portal` for coach)
 
 ### Phase 3: Media Storage Buckets & Uploads
 
