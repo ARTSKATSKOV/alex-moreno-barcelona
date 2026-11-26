@@ -21,7 +21,7 @@
 1. **Relative `og:image` path:** `src/routes/index.tsx` currently passes a Vite-hashed relative asset path (`/assets/hero-....jpg`). Social crawlers (WhatsApp, LinkedIn, X, Slack, iMessage, Facebook) require an **absolute `https://` URL** with explicit width/height (`1200×630`); otherwise they ignore it or fall back to platform-level defaults.
 2. **No branded `1200×630` website snapshot:** Using raw hero photography doesn't showcase the brand headline, Barcelona positioning, or live site aesthetic in link cards.
 3. **Missing canonical, manifest, and structured data:** There is no `rel="canonical"`, `og:url`, `og:site_name`, `og:locale`, `site.webmanifest`, `sitemap.xml`, or JSON-LD local business markup.
-4. *(Platform note)* If the site is also published via Lovable Cloud/Hosting, make sure any cached share preview in Lovable's **Publish / Project Settings** is refreshed after deploying these tags.
+4. _(Platform note)_ If the site is also published via Lovable Cloud/Hosting, make sure any cached share preview in Lovable's **Publish / Project Settings** is refreshed after deploying these tags.
 
 ---
 
@@ -29,7 +29,7 @@
 
 Capture a real, pixel-crisp `1200×630` snapshot of the live website and replace generic boilerplate icons with branded assets.
 
-- [x] Start the local app and capture a clean `1200×630` screenshot of the above-the-fold Hero + Header (`Alex Moreno.`, headline *"Get stronger. Stay consistent. In under an hour."*, Barceloneta backdrop, and *"Next available"* card) via the built-in browser at `1200×630` viewport
+- [x] Start the local app and capture a clean `1200×630` screenshot of the above-the-fold Hero + Header (`Alex Moreno.`, headline _"Get stronger. Stay consistent. In under an hour."_, Barceloneta backdrop, and _"Next available"_ card) via the built-in browser at `1200×630` viewport
 - [x] Save the snapshot to `public/og-image.png` (stable, unhashed path `/og-image.png` so social crawlers and external links never break across builds)
 - [x] Verify `public/og-image.png` dimensions (`1200×630`, 1.91:1 aspect ratio) and file size (clean cropped PNG)
 - [x] Create a crisp branded vector favicon `public/favicon.svg` (dark charcoal tile `#171514` with bold condensed `AM.` in cream + warm amber accent `#eb7a2e`)
@@ -63,6 +63,7 @@ Keep all URLs, titles, descriptions, social handles, and structured data builder
 Follow TanStack Router best practices: shared document defaults, icons, and manifest live in `__root.tsx`; page-specific Open Graph, Twitter Card, canonical URL, and `og:image` live in `index.tsx` so future subpages don't accidentally inherit `/` previews.
 
 ### 3.1 Root Route (`src/routes/__root.tsx`)
+
 - [x] Add core browser & mobile meta tags:
   - `theme-color` (`#171514`)
   - `color-scheme` (`dark`)
@@ -77,6 +78,7 @@ Follow TanStack Router best practices: shared document defaults, icons, and mani
 - [x] Audit `__root.tsx` to ensure zero leftover Lovable meta tags or placeholder comments remain
 
 ### 3.2 Home Route (`src/routes/index.tsx`)
+
 - [x] Wire `buildHomeMetadata()` into `Route.head()`:
   - **Core SEO:** `title`, `description`, `keywords`, `author`
   - **Canonical & Language links:** `<link rel="canonical" href="https://..." />`, `<link rel="alternate" hrefLang="en" ... />`, `<link rel="alternate" hrefLang="es" ... />`, `<link rel="alternate" hrefLang="x-default" ... />`
@@ -142,7 +144,7 @@ Give Google Search and AI/local search engines rich, machine-readable facts abou
   - JSON-LD parses cleanly and includes both `SportsActivityLocation` and `FAQPage` items matching `FAQ_ITEMS`
 - [x] Inspect rendered `<head>` HTML from the local server / SSR build to verify all meta tags, canonical link, icons, and JSON-LD scripts appear in the initial HTML response (not just client-side)
 - [x] Run `npm run lint`, `npx tsc --noEmit`, `npm test`, and `npm run build` with zero errors
-- [ ] *(Post-deploy)* Validate the live production URL in:
+- [ ] _(Post-deploy)_ Validate the live production URL in:
   - OpenGraph debugger (opengraph.xyz / Meta Sharing Debugger)
   - X / Twitter Card validator
   - LinkedIn Post Inspector

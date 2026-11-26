@@ -30,6 +30,7 @@
 ## 3. Standard Agent Workflow
 
 ### A. At the Start of Every Session / Task
+
 1. Inspect active milestones and open issues:
    - Check which issue matches the user's request.
    - If **an issue exists**: read it (`issue_read` / `gh issue view <id>`), post a brief comment noting work has started, and move its GitHub Project status to **In Progress**.
@@ -37,11 +38,13 @@
 2. Confirm acceptance criteria before writing code.
 
 ### B. During Implementation
+
 - Update task checkboxes inside the issue body as sub-tasks finish (for multi-step issues).
 - Post a short comment if requirements change, a trade-off is made, or a blocker occurs.
 - If you discover out-of-scope bugs or follow-up ideas, log them as new issues in the backlog (with labels + milestone) and link them (`Related to #<id>`).
 
 ### C. At Task Completion
+
 1. Run verification (`npm run lint`, `npx tsc --noEmit`, `npm test`, `npm run build` as applicable).
 2. Commit with a clear message referencing the issue:
    - `feat(schedule): add full-week toggle (Closes #12)`
@@ -49,6 +52,7 @@
 3. Post a closing comment on the issue:
    ```markdown
    ### Done
+
    - **Commit:** `<sha>`
    - **Summary:** <1–3 bullet points of what changed>
    - **Verification:** `npm test` (passed), `npx tsc --noEmit` (0 errors), `npm run build` (ok)
@@ -63,26 +67,33 @@
 ## 4. Issue Naming & Templates
 
 ### Title Format
+
 Use `[Area] Imperative action`:
+
 - `[Schedule] Add full-week toggle and studio/outdoor filters`
 - `[SEO] Replace default preview with 1200x630 website snapshot`
 - `[Bug] Mobile header My Bookings button missing aria-label`
 - `[Docs] Document local development and deployment env vars`
 
 ### Feature / Enhancement Template
+
 ```markdown
 ## Context
+
 Why are we doing this? Link any related plan doc (e.g. `IMPLEMENTATION_IMPROVEMENTS.MD`) or issue.
 
 ## Scope & Acceptance Criteria
+
 - [ ] Criterion 1 (observable, testable outcome)
 - [ ] Criterion 2
 - [ ] Tests / verification updated
 
 ## Out of Scope
+
 - Anything intentionally deferred to a separate issue
 
 ## Verification
+
 - [ ] `npm run lint`
 - [ ] `npx tsc --noEmit`
 - [ ] `npm test`
@@ -90,19 +101,24 @@ Why are we doing this? Link any related plan doc (e.g. `IMPLEMENTATION_IMPROVEME
 ```
 
 ### Bug Template
+
 ```markdown
 ## Problem
+
 What is broken and where does it occur (file, viewport, route)?
 
 ## Steps to Reproduce
+
 1. ...
 2. ...
 
 ## Expected vs. Actual
+
 - **Expected:** ...
 - **Actual:** ...
 
 ## Acceptance Criteria
+
 - [ ] Root cause fixed
 - [ ] Regression test added (if applicable)
 ```
@@ -112,16 +128,19 @@ What is broken and where does it occur (file, viewport, route)?
 ## 5. Labels & Milestones Convention
 
 ### Labels
+
 Use the repository's labels consistently (combine **Type** + **Area** when helpful):
 
-| Category | Labels |
-| :--- | :--- |
-| **Type (existing)** | `enhancement`, `bug`, `documentation`, `accessibility`, `question` |
-| **Area (create as needed)** | `frontend`, `backend`, `seo`, `analytics`, `qa`, `infra` |
-| **Priority (optional)** | `priority:high`, `priority:medium`, `priority:low` |
+| Category                    | Labels                                                             |
+| :-------------------------- | :----------------------------------------------------------------- |
+| **Type (existing)**         | `enhancement`, `bug`, `documentation`, `accessibility`, `question` |
+| **Area (create as needed)** | `frontend`, `backend`, `seo`, `analytics`, `qa`, `infra`           |
+| **Priority (optional)**     | `priority:high`, `priority:medium`, `priority:low`                 |
 
 ### Milestones
+
 Group issues into clear, outcome-driven Milestones (e.g. `M1: Frontend V2 Polish`, `M2: SEO, Metadata & Analytics`, `M3: Backend Booking & Auth`):
+
 - Every active issue must belong to a Milestone (except quick standalone hotfixes, which can still attach to the current release milestone).
 - Always include a short **description** and optional **due date** when creating a Milestone.
 - Keep Milestone progress visible by closing completed issues promptly and never leaving stale done issues open.

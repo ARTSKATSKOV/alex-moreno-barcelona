@@ -11,7 +11,7 @@ Quick checklist to set up **Sentry** for error reporting and user feedback on **
 3. Click **Create Project**:
    - **Platform:** `React`
    - **Project name:** `alex-moreno-barcelona`
-   - **Alert frequency:** *On every new issue* (good while traffic is low)
+   - **Alert frequency:** _On every new issue_ (good while traffic is low)
 
 ---
 
@@ -25,13 +25,14 @@ https://<public-key>@o<org-id>.ingest.de.sentry.io/<project-id>
 
 > **Note:** The `DSN` is safe to expose in frontend code (it only allows sending events to your project). Keep **Auth Tokens** private — never commit them to git.
 
-*(You can always find your DSN later under **Project Settings → Client Keys (DSN)**.)*
+_(You can always find your DSN later under **Project Settings → Client Keys (DSN)**.)_
 
 ---
 
 ## 3. Add `VITE_SENTRY_DSN` to Local & Vercel
 
 ### Local (`.env.local` — gitignored)
+
 Create `.env.local` in the project root:
 
 ```env
@@ -39,6 +40,7 @@ VITE_SENTRY_DSN=https://<your-dsn-here>
 ```
 
 ### Vercel Dashboard
+
 1. Open your Vercel project (`alex-moreno-barcelona-bd58`) → **Settings → Environment Variables**.
 2. Add:
    - **Key:** `VITE_SENTRY_DSN`
@@ -59,6 +61,7 @@ VITE_SENTRY_DSN=https://<your-dsn-here>
 ## 5. Next Step (Hand Off to Your AI Dev Agent)
 
 Once steps 1–3 are done, reply in chat:
-> *"Sentry project is created and `VITE_SENTRY_DSN` is set in `.env.local` and Vercel — wire up `@sentry/react` + ErrorBoundary + User Feedback for Issue #1."*
+
+> _"Sentry project is created and `VITE_SENTRY_DSN` is set in `.env.local` and Vercel — wire up `@sentry/react` + ErrorBoundary + User Feedback for Issue #1."_
 
 The agent will install `@sentry/react`, hook it into `src/routes/__root.tsx`, and give you a quick test trigger to confirm events land in your Sentry dashboard.
